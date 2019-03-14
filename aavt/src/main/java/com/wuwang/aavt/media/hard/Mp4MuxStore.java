@@ -99,7 +99,7 @@ public class Mp4MuxStore implements IHardStore {
     }
 
     @Override
-    public void close() throws AvException {
+    public void close() {
         synchronized (LOCK){
             try {
                 if(isMuxStart){
@@ -112,7 +112,7 @@ public class Mp4MuxStore implements IHardStore {
 
                 }
             }catch (IllegalStateException e){
-                throw new AvException("close muxer failed!",e);
+                e.printStackTrace();
             }
 
         }

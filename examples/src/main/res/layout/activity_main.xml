@@ -27,4 +27,12 @@
         android:onClick="onClick"
         android:text="@string/yuvexport" />
 
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mPlayVideo"
+        android:onClick="onClick"
+        android:text="@string/playvideo" />
+
 </LinearLayout>

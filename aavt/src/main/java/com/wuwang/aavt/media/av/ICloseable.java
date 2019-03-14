@@ -21,6 +21,6 @@ package com.wuwang.aavt.media.av;
  */
 public interface ICloseable {
 
-    void close() throws AvException;
+    void close();
 
 }

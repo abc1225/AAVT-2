@@ -32,6 +32,8 @@
         <activity android:name=".YuvExportActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".VideoPlayerActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

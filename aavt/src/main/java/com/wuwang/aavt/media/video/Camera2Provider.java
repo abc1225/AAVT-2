@@ -1,4 +1,4 @@
-package com.wuwang.aavt.media;
+package com.wuwang.aavt.media.video;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -32,7 +32,7 @@ import java.util.concurrent.Semaphore;
  * @version 1.00 , 2018/11/14
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class Camera2Provider extends CameraDevice.StateCallback implements ITextureProvider{
+public class Camera2Provider extends CameraDevice.StateCallback implements ITextureProvider {
 
     private CameraDevice camera;
     private CameraManager manager;

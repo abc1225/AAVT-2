@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import com.wuwang.aavt.gl.FrameBuffer;
 import com.wuwang.aavt.gl.LazyFilter;
 import com.wuwang.aavt.gl.YuvOutputFilter;
-import com.wuwang.aavt.media.CameraProvider;
+import com.wuwang.aavt.media.video.CameraProvider;
 import com.wuwang.aavt.media.RenderBean;
 import com.wuwang.aavt.media.SurfaceShower;
 import com.wuwang.aavt.media.VideoSurfaceProcessor;

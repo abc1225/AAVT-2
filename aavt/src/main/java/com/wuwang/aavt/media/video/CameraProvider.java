@@ -11,13 +11,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.wuwang.aavt.media;
+package com.wuwang.aavt.media.video;
 
 import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.os.Handler;
-import android.os.Looper;
 
 import com.wuwang.aavt.log.AvLog;
 

@@ -19,7 +19,6 @@ import android.graphics.SurfaceTexture;
 import android.opengl.EGL14;
 import android.opengl.GLES20;
 import android.os.Build;
-import android.util.Log;
 
 import com.wuwang.aavt.core.IObserver;
 import com.wuwang.aavt.core.Observable;
@@ -29,6 +28,7 @@ import com.wuwang.aavt.egl.EGLContextAttrs;
 import com.wuwang.aavt.egl.EglHelper;
 import com.wuwang.aavt.gl.FrameBuffer;
 import com.wuwang.aavt.log.AvLog;
+import com.wuwang.aavt.media.video.ITextureProvider;
 import com.wuwang.aavt.utils.GpuUtils;
 
 /**

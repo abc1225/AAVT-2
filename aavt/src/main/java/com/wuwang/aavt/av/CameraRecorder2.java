@@ -16,16 +16,14 @@ package com.wuwang.aavt.av;
 import android.content.Context;
 
 import com.wuwang.aavt.core.Renderer;
-import com.wuwang.aavt.media.Camera2Provider;
-import com.wuwang.aavt.media.CameraProvider;
-import com.wuwang.aavt.media.ITextureProvider;
+import com.wuwang.aavt.media.video.Camera2Provider;
+import com.wuwang.aavt.media.video.ITextureProvider;
 import com.wuwang.aavt.media.SurfaceEncoder;
 import com.wuwang.aavt.media.SoundRecorder;
 import com.wuwang.aavt.media.SurfaceShower;
 import com.wuwang.aavt.media.VideoSurfaceProcessor;
 import com.wuwang.aavt.media.av.AvException;
 import com.wuwang.aavt.media.hard.IHardStore;
-import com.wuwang.aavt.media.hard.Mp4MuxStore;
 import com.wuwang.aavt.media.hard.StrengthenMp4MuxStore;
 
 /**
@@ -139,11 +137,7 @@ public class CameraRecorder2 {
     public void stopRecord(){
         mSoundRecord.stop();
         mSurfaceStore.close();
-        try {
-            mMuxer.close();
-        } catch (AvException e) {
-            e.printStackTrace();
-        }
+        mMuxer.close();
     }
 
 }

@@ -1,4 +1,4 @@
-package com.wuwang.aavt.media;
+package com.wuwang.aavt.media.video;
 
 import android.annotation.TargetApi;
 import android.graphics.Point;
@@ -8,13 +8,14 @@ import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
-import android.util.Log;
 import android.view.Surface;
 
 import com.wuwang.aavt.log.AvLog;
+import com.wuwang.aavt.media.CodecUtil;
 import com.wuwang.aavt.media.av.AvException;
 import com.wuwang.aavt.media.hard.HardMediaData;
 import com.wuwang.aavt.media.hard.IHardStore;
+import com.wuwang.aavt.media.video.ITextureProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -173,11 +174,7 @@ public class Mp4Provider implements ITextureProvider {
                 AvLog.d(tag,"audioStop");
                 mExtractor.release();
                 mExtractor=null;
-                try {
-                    mStore.close();
-                } catch (AvException e) {
-                    e.printStackTrace();
-                }
+                mStore.close();
             }
         });
         mDecodeThread.start();

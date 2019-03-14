@@ -11,10 +11,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.wuwang.aavt.media;
+package com.wuwang.aavt.media.video;
 
 import android.graphics.Point;
 import android.graphics.SurfaceTexture;
+
+import com.wuwang.aavt.media.av.ICloseable;
 
 /**
  * ITextureProvider
@@ -22,7 +24,7 @@ import android.graphics.SurfaceTexture;
  * @author wuwang
  * @version v1.0 2017:10:26 18:18
  */
-public interface ITextureProvider {
+public interface ITextureProvider extends ICloseable {
 
     /**
      * 打开视频流数据源
@@ -30,11 +32,6 @@ public interface ITextureProvider {
      * @return 视频流的宽高
      */
     Point open(SurfaceTexture surface);
-
-    /**
-     * 关闭视频流数据源
-     */
-    void close();
 
     /**
      * 获取一帧数据

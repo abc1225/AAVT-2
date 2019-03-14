@@ -1,7 +1,6 @@
 package com.wuwang.aavt.examples;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,19 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wuwang.aavt.av.CameraRecorder2;
-import com.wuwang.aavt.av.SurfaceRecorder;
-import com.wuwang.aavt.gl.BaseFilter;
-import com.wuwang.aavt.gl.BeautyFilter;
-import com.wuwang.aavt.gl.BlackMagicFilter;
-import com.wuwang.aavt.gl.GrayFilter;
-import com.wuwang.aavt.gl.GroupFilter;
-import com.wuwang.aavt.gl.LazyFilter;
-import com.wuwang.aavt.gl.StickFigureFilter;
-import com.wuwang.aavt.gl.WaterMarkFilter;
-import com.wuwang.aavt.media.Camera2Provider;
-import com.wuwang.aavt.media.CameraProvider;
-import com.wuwang.aavt.utils.MatrixUtils;
+import com.wuwang.aavt.av.VideoCapture;
 
 public class CameraRecorderActivity extends AppCompatActivity{
 
@@ -37,7 +24,7 @@ public class CameraRecorderActivity extends AppCompatActivity{
     private boolean isRecordOpen=false;
     private int mCameraWidth,mCameraHeight;
 
-    private SurfaceRecorder mCamera;
+    private VideoCapture mCamera;
 
     private String tempPath= Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.mp4";
 
@@ -49,9 +36,10 @@ public class CameraRecorderActivity extends AppCompatActivity{
         mTvRecord= (TextView) findViewById(R.id.mTvRec);
         mTvPreview= (TextView) findViewById(R.id.mTvShow);
 
-        mCamera =new SurfaceRecorder(getApplicationContext());
-        mCamera.setRecordSize(368,640);
-        mCamera.setOutputPath(tempPath);
+        mCamera =new VideoCapture(getApplicationContext());
+        mCamera.setProperty(VideoCapture.KEY_OUTPUT_WIDTH, 368);
+        mCamera.setProperty(VideoCapture.KEY_OUTPUT_HEIGHT,640);
+        mCamera.setProperty(VideoCapture.KEY_OUTPUT_PATH,tempPath);
 
         mSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -65,9 +53,10 @@ public class CameraRecorderActivity extends AppCompatActivity{
 
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                mCamera.setSurface(holder.getSurface());
-                mCamera.setPreviewSize(width, height);
-                mCamera.open();
+                mCamera.setProperty(VideoCapture.KEY_PREVIEW_WIDTH,width);
+                mCamera.setProperty(VideoCapture.KEY_PREVIEW_HEIGHT,height);
+                mCamera.open(1);
+                mCamera.setPreviewSurface(holder.getSurface());
                 mCamera.startPreview();
                 isPreviewOpen=true;
             }

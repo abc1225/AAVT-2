@@ -3,8 +3,8 @@ package com.wuwang.aavt.av;
 import android.content.Context;
 
 import com.wuwang.aavt.core.Renderer;
-import com.wuwang.aavt.media.Camera2Provider;
-import com.wuwang.aavt.media.ITextureProvider;
+import com.wuwang.aavt.media.video.Camera2Provider;
+import com.wuwang.aavt.media.video.ITextureProvider;
 import com.wuwang.aavt.media.SoundRecorder;
 import com.wuwang.aavt.media.SurfaceEncoder;
 import com.wuwang.aavt.media.SurfaceShower;
@@ -145,11 +145,7 @@ public class SurfaceRecorder {
         if(mSoundRecord != null && mSurfaceStore != null && mMuxer != null){
             mSoundRecord.stop();
             mSurfaceStore.close();
-            try {
-                mMuxer.close();
-            } catch (AvException e) {
-                e.printStackTrace();
-            }
+            mMuxer.close();
         }
     }
 

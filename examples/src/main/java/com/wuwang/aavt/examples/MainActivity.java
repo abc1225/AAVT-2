@@ -11,6 +11,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private PermissionAsker mAsker;
+    private final int REQUEST_CODE_VIDEO_PLAY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,19 @@ public class MainActivity extends AppCompatActivity {
         mAsker.onRequestPermissionsResult(grantResults);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(data != null && data.getData() != null){
+            if(REQUEST_CODE_VIDEO_PLAY == requestCode){
+                String path = GetPathFromUri4kitkat.getPath(this,data.getData());
+                Intent intent = new Intent(this,VideoPlayerActivity.class);
+                intent.putExtra("videoPath",path);
+                startActivity(intent);
+            }
+        }
+    }
+
     public void onClick(View view){
         switch (view.getId()){
             case R.id.mMp4Process:
@@ -47,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.mYuvExport:
                 startActivity(new Intent(this,YuvExportActivity.class));
+                break;
+            case R.id.mPlayVideo:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("video/*");
+                startActivityForResult(intent,REQUEST_CODE_VIDEO_PLAY);
                 break;
             default:break;
         }

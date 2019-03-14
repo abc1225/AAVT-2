@@ -13,13 +13,11 @@
  */
 package com.wuwang.aavt.av;
 
-import com.wuwang.aavt.media.Mp4Provider;
+import com.wuwang.aavt.media.video.Mp4Provider;
 import com.wuwang.aavt.media.SurfaceEncoder;
 import com.wuwang.aavt.media.SurfaceShower;
 import com.wuwang.aavt.media.VideoSurfaceProcessor;
-import com.wuwang.aavt.media.av.AvException;
 import com.wuwang.aavt.media.hard.IHardStore;
-import com.wuwang.aavt.media.hard.Mp4MuxStore;
 import com.wuwang.aavt.media.hard.StrengthenMp4MuxStore;
 
 /**

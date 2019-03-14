@@ -59,7 +59,7 @@ public class StrengthenMp4MuxStore implements IHardStore {
     }
 
     @Override
-    public void close() throws AvException {
+    public void close(){
         synchronized (Lock){
             if(muxStarted){
                 audioTrack=-1;

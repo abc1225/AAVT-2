@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EffectMediaView">
+        <attr name="aavt_media_surface_type" format="enum">
+            <enum name="surface" value="0" />
+            <enum name="texture" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>
