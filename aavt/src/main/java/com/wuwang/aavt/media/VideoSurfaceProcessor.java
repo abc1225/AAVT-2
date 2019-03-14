@@ -45,7 +45,8 @@ public class VideoSurfaceProcessor{
 
     private boolean mGLThreadFlag=false;
     private Thread mGLThread;
-    private WrapRenderer mRenderer;
+    private Renderer renderer;
+    private boolean isRendererChanged = false;
     private Observable<RenderBean> observable;
     private final Object LOCK=new Object();
 
@@ -96,8 +97,22 @@ public class VideoSurfaceProcessor{
         }
     }
 
+
+    private WrapRenderer checkWrapRenderer(WrapRenderer renderer,int width,int height){
+        if(isRendererChanged){
+            isRendererChanged = false;
+            renderer.destroy();
+            renderer = new WrapRenderer(this.renderer);
+            renderer.create();
+            renderer.sizeChanged(width, height);
+            renderer.setFlag(mProvider.isLandscape()?WrapRenderer.TYPE_CAMERA:WrapRenderer.TYPE_MOVE);
+        }
+        return renderer;
+    }
+
     public void setRenderer(Renderer renderer){
-        mRenderer=new WrapRenderer(renderer);
+        this.renderer = renderer;
+        this.isRendererChanged = true;
     }
 
     private void glRun(){
@@ -131,14 +146,11 @@ public class VideoSurfaceProcessor{
             return;
         }
 
-        if(mRenderer==null){
-            mRenderer=new WrapRenderer(null);
-        }
+        WrapRenderer wrapRenderer=new WrapRenderer(null);
+        wrapRenderer.create();
+        wrapRenderer.sizeChanged(mSourceWidth,mSourceHeight);
+        wrapRenderer.setFlag(mProvider.isLandscape()?WrapRenderer.TYPE_CAMERA:WrapRenderer.TYPE_MOVE);
         FrameBuffer sourceFrame=new FrameBuffer();
-        mRenderer.create();
-        mRenderer.sizeChanged(mSourceWidth, mSourceHeight);
-        mRenderer.setFlag(mProvider.isLandscape()?WrapRenderer.TYPE_CAMERA:WrapRenderer.TYPE_MOVE);
-
         //用于其他的回调
         RenderBean rb=new RenderBean();
         rb.egl=egl;
@@ -149,12 +161,13 @@ public class VideoSurfaceProcessor{
         AvLog.d(TAG,"Processor While Loop Entry");
         //要求数据源必须同步填充SurfaceTexture，填充完成前等待
         while (!mProvider.frame()&&mGLThreadFlag){
+            wrapRenderer = checkWrapRenderer(wrapRenderer,mSourceWidth,mSourceHeight);
             mInputSurfaceTexture.updateTexImage();
-            mInputSurfaceTexture.getTransformMatrix(mRenderer.getTextureMatrix());
+            mInputSurfaceTexture.getTransformMatrix(wrapRenderer.getTextureMatrix());
             AvLog.d(TAG,"timestamp:"+ mInputSurfaceTexture.getTimestamp());
             sourceFrame.bindFrameBuffer(mSourceWidth, mSourceHeight);
             GLES20.glViewport(0,0, mSourceWidth, mSourceHeight);
-            mRenderer.draw(mInputSurfaceTextureId);
+            wrapRenderer.draw(mInputSurfaceTextureId);
             sourceFrame.unBindFrameBuffer();
             rb.textureId=sourceFrame.getCacheTextureId();
             //接收数据源传入的时间戳
@@ -166,7 +179,7 @@ public class VideoSurfaceProcessor{
         synchronized (LOCK){
             rb.endFlag=true;
             observable.notify(rb);
-            mRenderer.destroy();
+            wrapRenderer.destroy();
             destroyGL(egl);
             LOCK.notifyAll();
             AvLog.d(TAG,"gl thread exit");

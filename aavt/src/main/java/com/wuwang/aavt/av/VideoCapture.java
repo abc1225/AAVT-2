@@ -85,6 +85,7 @@ public class VideoCapture {
         processor.setTextureProvider(provider);
         processor.addObserver(shower);
         processor.addObserver(encoder);
+        setRenderer(renderer);
 
         processor.start();
     }
@@ -103,6 +104,8 @@ public class VideoCapture {
 
         encoder = new SurfaceEncoder();
         encoder.setStore(muxer);
+        encoder.setOutputSize((int)(float)(propFloat.get(KEY_OUTPUT_WIDTH,368.0f)),
+                (int)(float)(propFloat.get(KEY_OUTPUT_HEIGHT,640.f)));
 
         processor = new VideoSurfaceProcessor();
         processor.setTextureProvider(provider);

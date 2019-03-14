@@ -203,6 +203,7 @@ public class EffectMediaView extends RelativeLayout {
 
     public void onDestroy(){
         player.stop();
+        player.release();
     }
 
 }
