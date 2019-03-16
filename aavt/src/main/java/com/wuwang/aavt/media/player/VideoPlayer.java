@@ -13,9 +13,12 @@ import com.wuwang.aavt.core.Renderer;
 import com.wuwang.aavt.egl.EGLConfigAttrs;
 import com.wuwang.aavt.egl.EGLContextAttrs;
 import com.wuwang.aavt.egl.EglHelper;
+import com.wuwang.aavt.gl.FrameBuffer;
+import com.wuwang.aavt.gl.LazyFilter;
 import com.wuwang.aavt.gl.OesFilter;
 import com.wuwang.aavt.media.WrapRenderer;
 import com.wuwang.aavt.utils.GpuUtils;
+import com.wuwang.aavt.utils.MatrixUtils;
 
 /**
  * @author wuwang
@@ -114,6 +117,9 @@ public class VideoPlayer implements Runnable,ITextureProcessor{
         synchronized (SURFACE_LOCK){
             SURFACE_LOCK.notifyAll();
         }
+        synchronized (RENDER_LOCK){
+            RENDER_LOCK.notifyAll();
+        }
     }
 
     private WrapRenderer checkWrapRenderer(WrapRenderer renderer){
@@ -156,6 +162,12 @@ public class VideoPlayer implements Runnable,ITextureProcessor{
             return;
         }
 
+        FrameBuffer buffer = new FrameBuffer();
+        LazyFilter matrixFilter = new LazyFilter();
+        MatrixUtils.flip(matrixFilter.getVertexMatrix(),false,true);
+        matrixFilter.create();
+        matrixFilter.sizeChanged(width,height);
+
         WrapRenderer renderer = new WrapRenderer(null);
         renderer.create();
 
@@ -165,6 +177,9 @@ public class VideoPlayer implements Runnable,ITextureProcessor{
                     RENDER_LOCK.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                }
+                if(!threadFlag){
+                    break;
                 }
                 if(textureUpdate){
                     surfaceTexture.updateTexImage();
@@ -188,7 +203,10 @@ public class VideoPlayer implements Runnable,ITextureProcessor{
             GLES20.glClearColor(0,1,0,1);
             GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
             surfaceTexture.getTransformMatrix(renderer.getTextureMatrix());
+            buffer.bindFrameBuffer(width,height);
             renderer.draw(surfaceTextureId);
+            buffer.unBindFrameBuffer();
+            matrixFilter.draw(buffer.getCacheTextureId());
 
             helper.swapBuffers(showSurface);
         }
