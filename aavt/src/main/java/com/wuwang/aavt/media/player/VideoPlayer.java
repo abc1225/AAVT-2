@@ -15,7 +15,6 @@ import com.wuwang.aavt.egl.EGLContextAttrs;
 import com.wuwang.aavt.egl.EglHelper;
 import com.wuwang.aavt.gl.FrameBuffer;
 import com.wuwang.aavt.gl.LazyFilter;
-import com.wuwang.aavt.gl.OesFilter;
 import com.wuwang.aavt.media.WrapRenderer;
 import com.wuwang.aavt.utils.GpuUtils;
 import com.wuwang.aavt.utils.MatrixUtils;
