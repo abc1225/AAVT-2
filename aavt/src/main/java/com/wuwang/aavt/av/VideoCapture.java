@@ -138,6 +138,7 @@ public class VideoCapture {
 
     public void stopRecord(){
         encoder.close();
+        muxer.close();
     }
 
 

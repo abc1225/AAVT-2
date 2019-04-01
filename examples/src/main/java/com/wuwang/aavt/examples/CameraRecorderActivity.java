@@ -55,7 +55,7 @@ public class CameraRecorderActivity extends AppCompatActivity{
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
                 mCamera.setProperty(VideoCapture.KEY_PREVIEW_WIDTH,width);
                 mCamera.setProperty(VideoCapture.KEY_PREVIEW_HEIGHT,height);
-                mCamera.open(1);
+                mCamera.open(0);
                 mCamera.setPreviewSurface(holder.getSurface());
                 mCamera.startPreview();
                 isPreviewOpen=true;
@@ -93,7 +93,7 @@ public class CameraRecorderActivity extends AppCompatActivity{
                             Intent v=new Intent(Intent.ACTION_VIEW);
                             v.setDataAndType(Uri.parse(tempPath),"video/mp4");
                             if(v.resolveActivity(getPackageManager()) != null){
-                                startActivity(v);
+                                //startActivity(v);
                             }else{
                                 Toast.makeText(CameraRecorderActivity.this,
                                         "无法找到默认媒体软件打开:"+tempPath, Toast.LENGTH_SHORT).show();

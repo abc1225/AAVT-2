@@ -37,10 +37,18 @@ public class SurfaceShower implements IObserver<RenderBean> {
     private int mHeight;
     private int mMatrixType= MatrixUtils.TYPE_CENTERCROP;
     private OnDrawEndListener mListener;
+    private RenderBean mBean;
 
     public void setOutputSize(int width,int height){
         this.mWidth=width;
         this.mHeight=height;
+    }
+
+    private void clearSurface() {
+        if(mShowSurface!=null){
+            mBean.egl.destroySurface(mShowSurface);
+            mShowSurface = null;
+        }
     }
 
     /**
@@ -49,6 +57,7 @@ public class SurfaceShower implements IObserver<RenderBean> {
      */
     public void setSurface(Object surface){
         this.mSurface=surface;
+        clearSurface();
     }
 
     /**
@@ -69,11 +78,11 @@ public class SurfaceShower implements IObserver<RenderBean> {
 
     @Override
     public void onCall(RenderBean rb) {
-        if(rb.endFlag&&mShowSurface!=null){
-            rb.egl.destroySurface(mShowSurface);
-            mShowSurface=null;
+        if(rb.endFlag){
+            clearSurface();
         }else if(isShow&&mSurface!=null){
             if(mShowSurface==null){
+                mBean = rb;
                 mShowSurface=rb.egl.createWindowSurface(mSurface);
                 mFilter=new LazyFilter();
                 mFilter.create();
