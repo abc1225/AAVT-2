@@ -76,6 +76,7 @@ public abstract class BaseFilter implements Renderer {
 
     private FrameBuffer mFrameTemp;
     private final LinkedList<Runnable> mTasks=new LinkedList<>();
+    private final Object Lock = new Object();
 
     protected BaseFilter(Resources resource,String vertex,String fragment){
         this.mRes=resource;
@@ -203,9 +204,11 @@ public abstract class BaseFilter implements Renderer {
     }
 
     protected void onTaskExec(){
+      synchronized (Lock) {
         while (!mTasks.isEmpty()){
             mTasks.removeFirst().run();
         }
+      }
     }
 
     protected void onUseProgram(){
@@ -229,7 +232,9 @@ public abstract class BaseFilter implements Renderer {
     }
 
     public void runOnGLThread(Runnable runnable){
+      synchronized (Lock) {
         mTasks.addLast(runnable);
+      }
     }
 
     /**
