@@ -58,21 +58,25 @@ artifacts {
   archives javadocJar
   archives sourcesJar
 }
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-bintray {
-  user = properties.getProperty("bintray.user")
-  key = properties.getProperty("bintray.apikey")
-  configurations = ['archives']
-  pkg {
-    repo = "maven"
-    name = "Aavt"    //发布到JCenter上的项目名字
-    websiteUrl = siteUrl
-    vcsUrl = gitUrl
-    licenses = ["Apache-2.0"]
-    publish = true
+def propertiesFile = project.rootProject.file('local.properties')
+if(propertiesFile.exists()){
+  Properties properties = new Properties()
+  properties.load(propertiesFile.newDataInputStream())
+  bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+      repo = "maven"
+      name = "Aavt"    //发布到JCenter上的项目名字
+      websiteUrl = siteUrl
+      vcsUrl = gitUrl
+      licenses = ["Apache-2.0"]
+      publish = true
+    }
   }
 }
+
 javadoc { //jav doc采用utf-8编码否则会报“GBK的不可映射字符”错误
   options{
     encoding "UTF-8"
